@@ -1,5 +1,5 @@
 class ItemsController < ApplicationController
-  before_action :set_item, only: %i[ show edit update destroy ]
+  before_action :set_item, :validate_item only: %i[ show edit update destroy ]
 
   # GET /items or /items.json
   def index
@@ -60,11 +60,16 @@ class ItemsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_item
-      @item = Item.find(params[:id])
+      @item = Item.find_by(id: params[:id])
     end
 
     # Only allow a list of trusted parameters through.
     def item_params
       params.require(:item).permit(:name, :price, :description, :store_id_id)
     end
+
+    def validate_item
+      if @item.nil?
+        render json: { error: 'Item not found' }, status: :not_found
+    end 
 end

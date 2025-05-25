@@ -1,5 +1,5 @@
 class StoresController < ApplicationController
-  before_action :set_store, only: %i[ show edit update destroy ]
+  before_action :set_store,:validate_store only: %i[ show edit update destroy ]
 
   # GET /stores or /stores.json
   def index
@@ -67,4 +67,9 @@ class StoresController < ApplicationController
     def store_params
       params.require(:store).permit(:name, :address, :description)
     end
+
+    def validate_store
+      if @store.nil?
+        render json: { error: 'Store not found' }, status: :not_found
+
 end

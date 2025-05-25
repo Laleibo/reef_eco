@@ -1,5 +1,5 @@
 class IngredientsController < ApplicationController
-  before_action :set_ingredient, only: %i[ show edit update destroy ]
+  before_action :set_ingredient,:validate_ingredient only: %i[ show edit update destroy ]
 
   # GET /ingredients or /ingredients.json
   def index
@@ -60,11 +60,15 @@ class IngredientsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_ingredient
-      @ingredient = Ingredient.find(params[:id])
+      @ingredient = Ingredient.find_by(id: params[:id])
     end
 
     # Only allow a list of trusted parameters through.
     def ingredient_params
       params.require(:ingredient).permit(:name, :quantity, :item_id)
     end
+
+    def :validate_ingredient
+      if @ingredient.nil?
+        render json: { error: 'Ingredient not found' }, status: :not_found
 end
