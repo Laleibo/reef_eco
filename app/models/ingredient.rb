@@ -1,4 +1,5 @@
 class Ingredient < ApplicationRecord
+  attr_accessor :name, :quantity :description
   belongs_to :item
 
   validates :name, presence: true

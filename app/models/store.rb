@@ -1,7 +1,7 @@
 class Store < ApplicationRecord
-  has_many :items
-
   attr_accessor :name, :address, :description
+
+  has_many :items
 
   validates :name, presence: true
   validates :address, presence: true
